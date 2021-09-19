@@ -15,21 +15,26 @@ const colors = [
 
 btnStop.disabled = true;
 
-btnStart.addEventListener('click', checkDisabledBtn);
-btnStop.addEventListener('click', checkDisabledBtn);
+btnStart.addEventListener('click', onStartBtnClick);
+btnStop.addEventListener('click', onStopBtnClick);
 
-function checkDisabledBtn(event) {
-    if (event.target.dataset.action === 'start') {
-        btnStop.disabled = false;
-        btnStart.disabled = true;
-        return;
-    }
-    if (event.target.dataset.action === 'stop') {
-        btnStop.disabled = true;
-        btnStart.disabled = false;
-        return;
-    }
-}
 const randomIntegerFromInterval = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1) + min);
 };
+
+let colorChange = null;
+
+function onStartBtnClick() {
+    btnStart.disabled = true;
+    btnStop.disabled = false;
+    colorChange = setInterval(() => {
+        document.body.style.backgroundColor =
+            colors[randomIntegerFromInterval(0, colors.length - 1)];
+    }, 1000);
+}
+
+function onStopBtnClick() {
+    clearInterval(colorChange);
+    btnStop.disabled = true;
+    btnStart.disabled = false;
+}
